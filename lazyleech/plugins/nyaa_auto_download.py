@@ -11,7 +11,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from .. import app, ADMIN_CHATS, ForceDocumentFlag
 from .leech import initiate_torrent
 
-rsslink = list(filter(lambda x: x, map(str, os.environ.get("NYAA_RSS_LINKS", "https://nyaa.si/?page=rss&c=0_0&f=0&u=AkihitoSubsWeeklies").split(' '))))
+rsslink = list(filter(lambda x: x, map(str, os.environ.get("NYAA_RSS_LINKS", "").split(' '))))
 
 if os.environ.get('DB_URL'):
     DB_URL = os.environ.get('DB_URL')
@@ -48,5 +48,5 @@ if os.environ.get('DB_URL'):
                 await initiate_torrent(app, msg, i[1], flags)
 
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(rss_parser, "interval", minutes=int(os.environ.get('RSS_RECHECK_INTERVAL', 5)), max_instances=5)
+    scheduler.add_job(rss_parser, "interval", minutes=int(os.environ.get('RSS_RECHECK_INTERVAL', 1440)), max_instances=5)
     scheduler.start()
